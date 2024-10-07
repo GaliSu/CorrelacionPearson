@@ -15,15 +15,17 @@ public class calcPearson{
         }
 
         List<Double> resultados = new ArrayList<>(); //Se crea la lista que contendrá las correlaciones
-
+        //System.out.println(datos); 
+        //System.out.println("#######");
         // Calcular la correlación con cada otra lista
         for (int i = 0; i < numListas; i++) {
             double correlacion = 0.0;
             for (int j = 0; j < numListas; j++) {
-                if (i != j) { //Condición para que no se compare una lista consigo misma
-                    correlacion = pearsonPar(datos.get(i), datos.get(j));
-                    resultados.add(correlacion);
-                }
+                //if (i != j) { //Condición para que no se compare una lista consigo misma
+                correlacion = pearsonPar(datos.get(i), datos.get(j));
+                resultados.add(correlacion);
+                    
+                //}
             }
         }
 

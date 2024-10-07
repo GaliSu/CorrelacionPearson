@@ -38,7 +38,7 @@ public class mainWindow extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnSelec = new javax.swing.JButton();
-        btnMatriz = new javax.swing.JButton();
+        btnGuardarmatriz = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         testGalia = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -78,13 +78,23 @@ public class mainWindow extends javax.swing.JFrame {
 
         tabDir.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {}
+
             },
             new String [] {
-
+                "Archivos"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabDir.setCellSelectionEnabled(true);
         jScrollPane1.setViewportView(tabDir);
+        tabDir.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 470, 210));
 
@@ -110,13 +120,13 @@ public class mainWindow extends javax.swing.JFrame {
         });
         jPanel1.add(btnSelec, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, -1, -1));
 
-        btnMatriz.setText("Generar Matriz");
-        btnMatriz.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarmatriz.setText("Guardar Matriz");
+        btnGuardarmatriz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMatrizActionPerformed(evt);
+                btnGuardarmatrizActionPerformed(evt);
             }
         });
-        jPanel1.add(btnMatriz, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 370, -1, -1));
+        jPanel1.add(btnGuardarmatriz, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 370, -1, -1));
 
         jTabbedPane1.addTab("Matrices", jPanel1);
 
@@ -179,9 +189,9 @@ public class mainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSelecActionPerformed
 
-    private void btnMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatrizActionPerformed
+    private void btnGuardarmatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarmatrizActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMatrizActionPerformed
+    }//GEN-LAST:event_btnGuardarmatrizActionPerformed
 
     /**
      * @param args the command line arguments
@@ -223,7 +233,7 @@ public class mainWindow extends javax.swing.JFrame {
     public javax.swing.JButton btnCalc;
     public javax.swing.JButton btnEliminar;
     public javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnMatriz;
+    public javax.swing.JButton btnGuardarmatriz;
     private javax.swing.JButton btnSelec;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

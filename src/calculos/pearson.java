@@ -34,9 +34,11 @@ public class pearson{
             denominadorY += Math.pow(yNum, 2); //Sumas de los cuadraos de yNum
         }
 
-        double correlacion = (1 - (numerador / (Math.sqrt(denominadorX * denominadorY))+1)/2);
+        //double correlacion = (1 - (numerador / (Math.sqrt(denominadorX * denominadorY))+1)/2);
+        double correlacion = (numerador / (Math.sqrt(denominadorX * denominadorY)));
         //Se suma +1 para eliminar los valores negativos y se divide entre 2 para mantener la proporcion
         //Se obtiene un valor de similitud por lo que a 1 se le resta dicho valor, para obtener un valor de disimilitud
         return correlacion;
+        
     }
 }

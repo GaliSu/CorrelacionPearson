@@ -29,6 +29,27 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import generarImagen.HeatmapCustom;
+import java.awt.BorderLayout;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 
 public class controladorPrinc implements MouseListener, WindowListener{
     private mainWindow ventana;
@@ -45,6 +66,7 @@ public class controladorPrinc implements MouseListener, WindowListener{
         this.ventana.setResizable(true);
         
         ventana.btnGuardar.setEnabled(false);
+        ventana.btnGuardarmatriz.setEnabled(false);
         
         ventana.testGalia.setText("Hola Galia :D");
         
@@ -74,7 +96,12 @@ public class controladorPrinc implements MouseListener, WindowListener{
     
     private void llenarTabla(JTable tabDir){ //Método para colocar las ubicaciones de los archivos en una tabla
         //DefaultTableModel modeloT = (DefaultTableModel) ventana.tabGuardado.getModel();
-        DefaultTableModel modeloT = new DefaultTableModel();
+        DefaultTableModel modeloT = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column){
+            return false;
+        }
+    };
         tabDir.setModel(modeloT);
         
         modeloT.addColumn("Archivos seleccionados");
@@ -117,14 +144,62 @@ public class controladorPrinc implements MouseListener, WindowListener{
                 if(allGroupsResults.size() == 2){ //En caso de solo ingresar dos archivos, se obtiene la correlación entre esos dos grupos, arrojando un solo valor
                     Double correlacion = pearsonPar(allGroupsResults.get(0),allGroupsResults.get(1));
                     System.out.println("El resultado final es: "+correlacion);
+                    
                 }
                 
-                //Para más de dos archivos .csv:
-                else if(allGroupsResults.size() > 2){
-                    List<Double> pearsonFinal = calcPearson(allGroupsResults); //Se obtiene la correlación entre los vectores que contienen las correlaciones de cada grupo
-                    System.out.println("El vector final es: "+pearsonFinal);
+                // Para más de dos archivos .csv:
+            else if (allGroupsResults.size() > 2) {
+                List<Double> pearsonFinal = calcPearson(allGroupsResults); // Se obtiene la correlación entre los vectores
+                System.out.println("El vector final es: " + pearsonFinal);
 
+                // Calcula el tamaño de la matriz
+                int size = (int) Math.ceil(Math.sqrt(pearsonFinal.size()));
+                double[][] matrizPearson = new double[size][size]; // Crea la matriz cuadrada
+
+                // Llena la matriz con los valores de pearsonFinal
+                for (int i = 0; i < pearsonFinal.size(); i++) {
+                    int row = i / size;
+                    int col = i % size;
+                    matrizPearson[row][col] = pearsonFinal.get(i);
                 }
+
+                // Crea el JFrame para la matriz de calor
+                JFrame frame = new JFrame("Custom Heatmap Example");
+                HeatmapCustom heatmapPanel = new HeatmapCustom(matrizPearson);
+                frame.add(heatmapPanel, BorderLayout.CENTER); // Agrega el panel de la matriz de calor en el centro
+                frame.setSize(300, 300); // Ajusta el tamaño del frame
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setAlwaysOnTop(true); // Asegura que la ventana esté siempre encima
+                frame.setVisible(true);
+
+                // Crea un BufferedImage con el contenido del panel de la matriz de calor
+                BufferedImage image = new BufferedImage(heatmapPanel.getWidth(), heatmapPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = image.createGraphics();
+                heatmapPanel.paint(g2d); // Dibuja el panel en el BufferedImage
+                g2d.dispose();
+
+                // Abre un JFileChooser para que el usuario elija la ubicación donde guardar la imagen
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Guardar imagen como"); // Título de la ventana
+                fileChooser.setSelectedFile(new File("heatmap_image.png")); // Nombre de archivo por defecto
+
+                // Muestra el diálogo de guardado y obtiene la respuesta del usuario
+                int userSelection = fileChooser.showSaveDialog(null);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = fileChooser.getSelectedFile(); // Archivo seleccionado por el usuario
+                    try {
+                        // Guarda la imagen en la ubicación seleccionada
+                        ImageIO.write(image, "png", fileToSave);
+                        System.out.println("Imagen guardada en: " + fileToSave.getAbsolutePath());
+                    } catch (Exception eG) {
+                        eG.printStackTrace();
+                    }
+                }
+            }
+
+             ventana.btnGuardarmatriz.setEnabled(true);    
+               
             }
             else if(ventana.selMetodo.getSelectedItem() == "Coseno"){ //Selección de método para Coseno del ángulo entre vectores
                 List<List<Double>> allGroupsResults = new ArrayList(); //Lista que guardará los vectores resultantes de cada grupo
@@ -175,6 +250,8 @@ public class controladorPrinc implements MouseListener, WindowListener{
                 JOptionPane.showMessageDialog(ventana, "Debes calcular la correlación antes de guardar.");
             }
 
+        }else if(e.getSource() == ventana.btnEliminar){
+            
         }     
     }
     
@@ -187,19 +264,32 @@ public class controladorPrinc implements MouseListener, WindowListener{
         llenarTablaDesdeBaseDatos(); // Llenar la tabla desde la base de datos cuando se abre la ventana
     }
     
-    public void llenarTablaDesdeBaseDatos() {
-        DefaultTableModel modeloT = (DefaultTableModel) ventana.tabGuardado.getModel();
+    
+   public void llenarTablaDesdeBaseDatos() {
+        // Crear un modelo de tabla que no permita la edición de celdas
+        DefaultTableModel modeloT = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Deshabilitar la edición de todas las celdas
+            }
+        };
+
+        ventana.tabGuardado.setModel(modeloT); // Establecer el modelo en la tabla
+        modeloT.addColumn("Nombre");
+        modeloT.addColumn("Fecha");
+        modeloT.addColumn("Observaciones");
+
         modeloT.setRowCount(0); // Limpiar la tabla
 
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
 
-        String sql = "SELECT name, fecha ,observaciones FROM matrizinfo"; // Consulta para obtener los datos de la tabla matrizinfo
+        String sql = "SELECT name, fecha, observaciones FROM matrizinfo"; // Consulta para obtener los datos de la tabla matrizinfo
 
         try {
             conn = ConexionBaseDatos.conectar(); // Usar la clase ConexionBaseDatos para conectar
-            stmt = conn.prepareStatement(sql); // Preparar la consulta
+            stmt = conn.createStatement(); // Cambiado a createStatement()
             rs = stmt.executeQuery(sql);
 
             // Iterar sobre los resultados y agregarlos a la tabla
@@ -207,13 +297,13 @@ public class controladorPrinc implements MouseListener, WindowListener{
                 String name = rs.getString("name");
                 Timestamp fecha = rs.getTimestamp("fecha"); // Cambiar de int a Timestamp
                 String observaciones = rs.getString("observaciones");
-                modeloT.addRow(new Object[]{name, fecha ,observaciones});
+                modeloT.addRow(new Object[]{name, fecha, observaciones});
             }
         } catch (SQLException e) {
             System.out.println("Error al llenar la tabla desde la base de datos.");
             e.printStackTrace();
         } finally {
-            // Cerrar ResultSet, PreparedStatement y Connection
+            // Cerrar ResultSet, Statement y Connection
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
@@ -224,9 +314,7 @@ public class controladorPrinc implements MouseListener, WindowListener{
             }
         }
     }
-
-
-
+   
 
     @Override
     public void mousePressed(MouseEvent e) {

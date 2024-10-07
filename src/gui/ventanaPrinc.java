@@ -42,10 +42,8 @@ public class ventanaPrinc extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Añade tus archivos");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 283, -1));
 
         btnAdd.setText("Buscar");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -53,10 +51,8 @@ public class ventanaPrinc extends javax.swing.JFrame {
                 btnAddActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, -1, -1));
 
         selMetodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Coseno", "Correlación de Pearson" }));
-        getContentPane().add(selMetodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 69, -1, -1));
 
         btnCalc.setText("Calcular");
         btnCalc.addActionListener(new java.awt.event.ActionListener() {
@@ -64,7 +60,6 @@ public class ventanaPrinc extends javax.swing.JFrame {
                 btnCalcActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCalc, new org.netbeans.lib.awtextra.AbsoluteConstraints(429, 69, -1, -1));
 
         tabDir.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,7 +71,35 @@ public class ventanaPrinc extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tabDir);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 98, 495, 303));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(selMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(267, 267, 267)
+                        .addComponent(btnCalc))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jLabel1)
+                .addGap(6, 6, 6)
+                .addComponent(btnAdd)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCalc))
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
