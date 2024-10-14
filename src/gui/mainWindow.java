@@ -73,7 +73,7 @@ public class mainWindow extends javax.swing.JFrame {
         });
         jPanel1.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
 
-        selMetodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Coseno", "Correlación de Pearson" }));
+        selMetodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Coseno", "Correlacion de Pearson" }));
         jPanel1.add(selMetodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 90, -1, -1));
 
         tabDir.setModel(new javax.swing.table.DefaultTableModel(

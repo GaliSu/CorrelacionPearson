@@ -44,6 +44,12 @@ public class controladorGuardar implements MouseListener, WindowListener  {
         this.ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         oyentes();
+        
+        String datos = this.controladorPrincipal.getDatosmatriz();
+        System.out.println("------------------");
+        System.out.println(datos);
+        String tipoCorrelacion = this.controladorPrincipal.getTipoCorrelacion();
+        System.out.println(tipoCorrelacion);
 
         // Agregar el WindowListener para detectar cuando la ventana se abra
         this.ventana.addWindowListener(this);
@@ -65,6 +71,7 @@ public class controladorGuardar implements MouseListener, WindowListener  {
             System.out.println(name);
             String observaciones = ventana.textaObservaciones.getText();
             System.out.print(observaciones);
+            
 
             testDAO dao = new testDAO(ConexionBaseDatos.conectar());
 

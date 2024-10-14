@@ -35,6 +35,7 @@ public class testDAO {
                 String name = resultSet.getString("name");
                 Timestamp fecha = resultSet.getTimestamp("fecha");
                 String observaciones = resultSet.getString("observaciones");
+
                 
                 ConexionBaseDatos.cerrarConexion(conexion);
 
@@ -67,6 +68,7 @@ public class testDAO {
             // Establece el valor del parámetro de la consulta
             statement.setString(1, name); // El valor es un entero, id del test
             statement.setString(2, observaciones);
+
             
               // Ejecutamos la consulta
             int rowsInserted = statement.executeUpdate();
@@ -77,6 +79,7 @@ public class testDAO {
                 return estate;
             }
 
+    
         } catch (SQLException e) {
             System.out.println("Error al insertar los datos: " + e.getMessage());
             return estate;

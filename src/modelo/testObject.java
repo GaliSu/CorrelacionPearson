@@ -39,6 +39,8 @@ public class testObject {
     public String getObservaciones() {
         return observaciones;
     }
+    
+ 
 
     public void setIdmatrizinfo(int idmatrizinfo) {
         this.idmatrizinfo = idmatrizinfo;
@@ -55,6 +57,8 @@ public class testObject {
     public void setObervaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+ 
+
     
     
 }

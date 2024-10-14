@@ -4,10 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/galia/Documents/NetBeansProjects/correlacionPearson/src/ed/matdisim/MatDisim.java</file>
-            <file>file:/C:/Users/galia/Documents/NetBeansProjects/correlacionPearson/src/gui/mainWindow.java</file>
             <file>file:/C:/Users/galia/Documents/NetBeansProjects/correlacionPearson/src/controlador/controladorGuardar.java</file>
             <file>file:/C:/Users/galia/Documents/NetBeansProjects/correlacionPearson/src/controlador/controladorPrinc.java</file>
-            <file>file:/C:/Users/galia/Documents/NetBeansProjects/correlacionPearson/src/gui/Saving.java</file>
+            <file>file:/C:/Users/galia/Documents/NetBeansProjects/correlacionPearson/src/gui/ventanaMatriz.java</file>
         </group>
     </open-files>
 </project-private>

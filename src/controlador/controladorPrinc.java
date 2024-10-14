@@ -50,11 +50,19 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class controladorPrinc implements MouseListener, WindowListener{
     private mainWindow ventana;
     List<String> direcciones = new ArrayList(); //Lista que guardará las ubicaciones de los archivos
-    
+    private String datosMatriz;
+    private String tipoCorrelacion;
     
     
     public controladorPrinc(mainWindow ventana){
@@ -68,7 +76,6 @@ public class controladorPrinc implements MouseListener, WindowListener{
         ventana.btnGuardar.setEnabled(false);
         ventana.btnGuardarmatriz.setEnabled(false);
         
-        ventana.testGalia.setText("Hola Galia :D");
         
         oyentes();
         
@@ -133,7 +140,7 @@ public class controladorPrinc implements MouseListener, WindowListener{
         
         if(e.getSource() == ventana.btnCalc){ //Al presionar el botón "Calcular":
             
-            if(ventana.selMetodo.getSelectedItem() == "Correlación de Pearson"){ //Selección de método para "Correlación de Pearson"
+            if(ventana.selMetodo.getSelectedItem() == "Correlacion de Pearson"){ //Selección de método para "Correlación de Pearson"
                 List<List<Double>> allGroupsResults = new ArrayList(); //Lista que guardará los vectores resultantes de cada grupo
                 for(int i=0;i<direcciones.size();i++){
                     List<List<Double>> datos = leerCSV(direcciones.get(i));
@@ -152,6 +159,11 @@ public class controladorPrinc implements MouseListener, WindowListener{
                 List<Double> pearsonFinal = calcPearson(allGroupsResults); // Se obtiene la correlación entre los vectores
                 System.out.println("El vector final es: " + pearsonFinal);
 
+                this.datosMatriz = pearsonFinal.toString();
+                
+                Object elementoCombobox = ventana.selMetodo.getSelectedItem();
+                this.tipoCorrelacion = elementoCombobox.toString();
+                
                 // Calcula el tamaño de la matriz
                 int size = (int) Math.ceil(Math.sqrt(pearsonFinal.size()));
                 double[][] matrizPearson = new double[size][size]; // Crea la matriz cuadrada
@@ -168,7 +180,7 @@ public class controladorPrinc implements MouseListener, WindowListener{
                 HeatmapCustom heatmapPanel = new HeatmapCustom(matrizPearson);
                 frame.add(heatmapPanel, BorderLayout.CENTER); // Agrega el panel de la matriz de calor en el centro
                 frame.setSize(300, 300); // Ajusta el tamaño del frame
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setAlwaysOnTop(true); // Asegura que la ventana esté siempre encima
                 frame.setVisible(true);
 
@@ -182,7 +194,8 @@ public class controladorPrinc implements MouseListener, WindowListener{
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setDialogTitle("Guardar imagen como"); // Título de la ventana
                 fileChooser.setSelectedFile(new File("heatmap_image.png")); // Nombre de archivo por defecto
-
+                
+                
                 // Muestra el diálogo de guardado y obtiene la respuesta del usuario
                 int userSelection = fileChooser.showSaveDialog(null);
 
@@ -192,12 +205,11 @@ public class controladorPrinc implements MouseListener, WindowListener{
                         // Guarda la imagen en la ubicación seleccionada
                         ImageIO.write(image, "png", fileToSave);
                         System.out.println("Imagen guardada en: " + fileToSave.getAbsolutePath());
-                    } catch (Exception eG) {
-                        eG.printStackTrace();
+                    } catch (Exception ie) {
+                        ie.printStackTrace();
                     }
                 }
             }
-
              ventana.btnGuardarmatriz.setEnabled(true);    
                
             }
@@ -224,7 +236,6 @@ public class controladorPrinc implements MouseListener, WindowListener{
             ventana.btnGuardar.setEnabled(true);
         }else if(e.getSource() == ventana.btnEliminar){
             
-            ventana.testGalia.setText("Actualice Galia :D");
             
             int fila = ventana.tabDir.getSelectedRow();
             DefaultTableModel modelo = (DefaultTableModel) ventana.tabDir.getModel();
@@ -314,6 +325,24 @@ public class controladorPrinc implements MouseListener, WindowListener{
             }
         }
     }
+
+    public String getDatosmatriz() {
+        return datosMatriz;
+    }
+    
+    public void setDatosmatriz(String datosmatriz) {
+        this.datosMatriz = datosmatriz;
+    }
+
+    public String getTipoCorrelacion() {
+        return tipoCorrelacion;
+    }
+
+    public void setTipoCorrelacion(String tipoCorrelacion) {
+        this.tipoCorrelacion = tipoCorrelacion;
+    }
+   
+    
    
 
     @Override
